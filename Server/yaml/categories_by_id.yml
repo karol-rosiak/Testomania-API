@@ -1,0 +1,25 @@
+    Get category by id
+    ---
+    tags:
+    - "categories"
+    parameters:
+      - name: category_id
+        in: path
+        type: integer
+        required: true
+        description: Category from the database with given ID
+    responses:
+      200:
+        description: Category from the database with given ID
+        schema:
+          properties:
+            ID:
+              type: integer
+            Name:
+              type: string
+      404:
+        description:  No questions in the database
+        schema:
+          properties:
+            error:
+              type: string

@@ -1,0 +1,24 @@
+    Gets every user from the database
+    ---
+    tags:
+    - "users"
+    parameters: []
+    responses:
+      200:
+        description: Every user in the database
+        schema:
+          properties:
+            ID:
+              type: integer
+            Login:
+              type: string
+            Email:
+              type: string
+            Rank:
+              type: string
+      400:
+        description: No users in the database
+        schema:
+          properties:
+            error:
+              type: string

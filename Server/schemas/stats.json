@@ -1,0 +1,10 @@
+{
+  "add": {
+    "type": "object",
+    "properties": {
+		"Login": {},
+		"Points": {}
+    },
+    "required": ["Login","Points"]
+	}
+  }

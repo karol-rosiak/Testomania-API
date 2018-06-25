@@ -1,0 +1,63 @@
+    Update a question
+    ---
+    tags:
+    - "questions"
+    consumes:
+    - application/json
+    parameters:
+        - in: path
+          name: question_id
+          type: integer
+          required: true
+          description: ID of question to be updated
+        - in: body
+          name: question
+          description: The question to be updated
+          required: true
+          schema:
+            type: object
+            required:
+              - Question
+              - A
+              - B
+              - C
+              - D
+              - Correct
+              - Category
+              - User
+            properties:
+                Question:
+                  type: string
+                A:
+                  type: string
+                B:
+                  type: string
+                C:
+                  type: string
+                D:
+                  type: string
+                Correct:
+                  type: string
+                Category:
+                  type: string
+                User:
+                  type: string
+    responses:
+      200:
+        description:  Confirmation that the question was uppdated
+        schema:
+          properties:
+            Result:
+              type: string
+      400:
+        description: An error occured while updating question
+        schema:
+          properties:
+            error:
+              type: string
+      404:
+        description: Couldn't find category or user
+        schema:
+          properties:
+            error:
+              type: string

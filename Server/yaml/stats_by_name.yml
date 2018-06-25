@@ -1,0 +1,27 @@
+    Get users statistics by users name
+    ---
+    tags:
+    - "stats"
+    parameters:
+      - name: user_login
+        in: path
+        type: string
+        required: true
+        description: Users login
+    responses:
+      200:
+        description: Users statistics
+        schema:
+          properties:
+            Login:
+              type: string
+            Completed:
+              type: integer
+            Points:
+              type: integer
+      404:
+        description: No stats or user in the database
+        schema:
+          properties:
+            error:
+              type: string

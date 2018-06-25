@@ -1,0 +1,16 @@
+{
+  "insert": {
+    "type": "object",
+    "properties": {
+      "Category": {}
+    },
+    "required": ["Category"]
+  },
+  "update": {
+    "type": "object",
+    "properties": {
+      "Category": {}
+    },
+    "required": ["Category"]
+  }
+}

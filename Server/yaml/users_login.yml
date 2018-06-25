@@ -1,0 +1,29 @@
+    Login a user
+    ---
+    tags:
+    - "users"
+    consumes:
+    - application/json
+    parameters:
+        - in: path
+          name: user_login
+          type: string
+          required: true
+          description: Name of user to login
+    responses:
+      200:
+        description: Returns login data
+        schema:
+          properties:
+            Id:
+              type: string
+            Password:
+              type: string
+            Rank:
+              type: string
+      404:
+        description: Invalid username
+        schema:
+          properties:
+            error:
+              type: string

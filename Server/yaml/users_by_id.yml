@@ -1,0 +1,29 @@
+    Get one user by id
+    ---
+    tags:
+    - "users"
+    parameters:
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+        description: Question from the database with given ID
+    responses:
+      200:
+        description: User with given ID
+        schema:
+          properties:
+            ID:
+              type: integer
+            Login:
+              type: string
+            Email:
+              type: string
+            Rank:
+              type: string
+      404:
+        description:  No questions in the database
+        schema:
+          properties:
+            error:
+              type: string

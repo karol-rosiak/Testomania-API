@@ -1,0 +1,23 @@
+    Clear stats of a user
+    ---
+    tags:
+    - "stats"
+    parameters:
+      - name: user_id
+        in: path
+        type: integer
+        required: true
+        description: Users ID
+    responses:
+      200:
+        description:  The stats of a given user were successfully cleared
+        schema:
+          properties:
+            Result:
+              type: string
+      404:
+        description: No stats or user in the database
+        schema:
+          properties:
+            error:
+              type: string

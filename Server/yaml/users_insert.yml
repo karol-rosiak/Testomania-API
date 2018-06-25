@@ -1,0 +1,37 @@
+    Add a user
+    ---
+    tags:
+    - "users"
+    consumes:
+    - application/json
+    parameters:
+        - in: body
+          name: user
+          description: The user to be added
+          required: true
+          schema:
+            type: object
+            required:
+              - Login
+              - Password
+              - Email
+            properties:
+                Login:
+                  type: string
+                Password:
+                  type: string
+                Email:
+                  type: string
+    responses:
+      201:
+        description:  Confirmation that the user was created
+        schema:
+          properties:
+            Result:
+              type: string
+      400:
+        description: An error occured while adding user
+        schema:
+          properties:
+            error:
+              type: string

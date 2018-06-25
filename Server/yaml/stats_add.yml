@@ -1,0 +1,40 @@
+    Add stats to user
+    ---
+    tags:
+    - "stats"
+    consumes:
+    - application/json
+    parameters:
+        - in: body
+          name: Stats
+          description: Stats of the test that the user did on the site
+          required: true
+          schema:
+            type: object
+            required:
+              - Login
+              - Points
+            properties:
+                Login:
+                  type: string
+                Points:
+                  type: integer
+    responses:
+      200:
+        description:  Confirmation that the stats were added
+        schema:
+          properties:
+            Result:
+              type: string
+      400:
+        description: An error occured while updating stats
+        schema:
+          properties:
+            error:
+              type: string
+      404:
+        description: Couldn't find given user
+        schema:
+          properties:
+            error:
+              type: string

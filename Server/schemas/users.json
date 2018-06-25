@@ -1,0 +1,26 @@
+{
+	"update": {
+    "type": "object",
+    "properties": {
+		"Login": {},
+		"Email": {}
+    },
+    "required": ["Login","Email"]
+	},
+	"password": {
+    "type": "object",
+    "properties": {
+		"Password": {}
+    },
+    "required": ["Password"]
+	},
+	"register": {
+    "type": "object",
+    "properties": {
+		"Login": {},
+		"Password": {},
+		"Email": {}
+    },
+    "required": ["Login","Password","Email"]
+	}
+  }

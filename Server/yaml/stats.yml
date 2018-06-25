@@ -1,0 +1,21 @@
+    Get statistics for every user
+    ---
+    tags:
+    - "stats"
+    responses:
+      200:
+        description:  Statistics for every user in the database
+        schema:
+          properties:
+            Login:
+              type: string
+            Completed:
+              type: integer
+            Points:
+              type: integer
+      404:
+        description: No stats in the database
+        schema:
+          properties:
+            error:
+              type: string

@@ -1,0 +1,33 @@
+    Get one random question from the database
+    ---
+    tags:
+    - "questions"
+    responses:
+      200:
+        description:  JSON object with one random question from the database
+        schema:
+          properties:
+            ID:
+              type: integer
+            Question:
+              type: string
+            A:
+              type: string
+            B:
+              type: string
+            C:
+              type: string
+            D:
+              type: string
+            Correct:
+              type: string
+            Category:
+              type: string
+            User:
+              type: string
+      404:
+        description:  No questions in the database
+        schema:
+          properties:
+            error:
+              type: string

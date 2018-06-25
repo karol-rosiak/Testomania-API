@@ -1,0 +1,20 @@
+    Gets every category from the database
+    ---
+    tags:
+    - "categories"
+    parameters: []
+    responses:
+      200:
+        description:  JSON object with every category from the database
+        schema:
+          properties:
+            ID:
+              type: integer
+            Name:
+              type: string
+      400:
+        description: No categories in the database
+        schema:
+          properties:
+            error:
+              type: string

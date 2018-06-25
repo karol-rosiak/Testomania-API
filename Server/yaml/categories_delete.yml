@@ -1,0 +1,19 @@
+    Delete a category
+    ---
+    tags:
+    - "categories"
+    parameters:
+      - name: category_id
+        in: path
+        type: integer
+        required: true
+        description: ID of category to be deleted
+    responses:
+      204:
+        description:  Confirmation that the category was deleted
+      404:
+        description:  Couldn't find category with given ID
+        schema:
+          properties:
+            error:
+              type: string

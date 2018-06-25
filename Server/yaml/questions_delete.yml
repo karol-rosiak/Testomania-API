@@ -1,0 +1,19 @@
+    Delete a question
+    ---
+    tags:
+    - "questions"
+    parameters:
+      - name: question_id
+        in: path
+        type: integer
+        required: true
+        description: ID of question to be deleted
+    responses:
+      204:
+        description:  Confirmation that the question was deleted
+      404:
+        description:  Couldn't find question with given ID
+        schema:
+          properties:
+            error:
+              type: string

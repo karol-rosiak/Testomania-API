@@ -1,0 +1,29 @@
+{
+  "insert": {
+    "type": "object",
+    "properties": {
+      "Question": {},
+      "A": {},
+	  "B": {},
+	  "C": {},
+	  "D": {},
+	  "Correct": {},
+	  "Category": {},
+	  "User": {}
+    },
+    "required": ["Question", "A","B","C","D","Correct","Category","User"]
+  },
+  "update": {
+    "type": "object",
+    "properties": {
+      "Question": {},
+      "A": {},
+	  "B": {},
+	  "C": {},
+	  "D": {},
+	  "Correct": {},
+	  "Category": {}
+    },
+    "required": ["Question", "A","B","C","D","Correct","Category"]
+  }
+}
