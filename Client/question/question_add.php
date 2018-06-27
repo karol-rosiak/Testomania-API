@@ -29,7 +29,7 @@ if (isset($_POST['Question'])) {
 						"Category" => $_POST['Category'], 
 						"User" => $_SESSION['Logged']
 						);
-    $apiResult = apiRequest("questions/add", "POST", $postArray);
+    $apiResult = apiRequest("questions", "POST", $postArray);
     $response = $apiResult["Body"];
     $statusCode = $apiResult["Status"];
     if ($statusCode != 201) {

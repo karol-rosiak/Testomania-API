@@ -4,9 +4,9 @@
   <li><a href="../index.php">Home</a></li>
   <li><a href="../question/question_one.php">One question</a></li>
   <li><a href="../question/question_quiz.php">Test</a></li>
+  <li><a href="../stats/stats_all.php">Ranking</a></li>
 
 <?php
-session_start();
 
 if(isset($_SESSION['Logged'])  && $_SESSION['Rank']=="Administrator")
 {

@@ -21,7 +21,7 @@ if(!isset($_SESSION["Logged"]) || $_SESSION["Rank"] != "Administrator"){
 
 if (isset($_POST['Category'])) {
     $postArray = array("Category" => $_POST['Category']);
-    $apiResult = apiRequest("categories/add", "POST", $postArray);
+    $apiResult = apiRequest("categories", "POST", $postArray);
     $response = $apiResult["Body"];
     $response = json_decode($response);
     $statusCode = $apiResult["Status"];

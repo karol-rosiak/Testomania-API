@@ -24,7 +24,7 @@ if (!isset($_SESSION["Logged"]) || $_SESSION["Rank"] != "Administrator") {
     echo "Error. You don't have permission to view this page!";
     die();
 }
-$apiResult = apiRequest("questions/one/$id/delete", "DELETE");
+$apiResult = apiRequest("questions/$id", "DELETE");
 $response = $apiResult["Body"];
 $response = json_decode($apiResult["Body"]);
 $statusCode = $apiResult["Status"];

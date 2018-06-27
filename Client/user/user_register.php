@@ -44,7 +44,7 @@ if(!isset($_SESSION['logged']))
 		if(count($errors) == 0){
 			$postArray = array(
 								"Login" => $_POST["login"],
-								"Password" => $password,
+								"Password" =>$_POST["password"],
 								"Email" => $_POST["email"]
 								);
 								
@@ -56,8 +56,9 @@ if(!isset($_SESSION['logged']))
 			if($statusCode != 201){
 				if($response != NULL)
 					echo "Error: " . $response->error . "</br>";
-			} else{
-				echo "Error while adding a user </br>";
+				else{
+					echo "Error while adding a user </br>";
+				}
 			}
 			else{
 				echo "User registered successfully!";

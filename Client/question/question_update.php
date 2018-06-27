@@ -38,7 +38,7 @@ if (isset($_POST['Question'])) {
 						"Correct" => $_POST['Correct'], 
 						"Category" => $_POST['Category']
 						);
-    $apiResult = apiRequest("questions/one/$id/update", "PUT", $postArray);
+    $apiResult = apiRequest("questions/$id", "PUT", $postArray);
     $response = $apiResult["Body"];
     $statusCode = $apiResult["Status"];
     if ($statusCode != 200) {

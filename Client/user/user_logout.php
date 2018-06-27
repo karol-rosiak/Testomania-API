@@ -10,22 +10,23 @@
 <body>
 
 <div id="container">
-<?php include '../header.php'; ?>
-<?php include '../nav.php'; ?>
-
 <?php
+include '../header.php'; 
 
-if(isset($_SESSION['Logged']))
-{
-			session_destroy();
-			echo '<br />You were succssefully logged off!';
+$loggedOut = false; 
+if(isset($_SESSION['Logged'])){
+	unset($_SESSION['Logged']);
+	session_destroy();
+	$loggedOut = true;
 }
-else
-{
-	echo 'Error';  
-}
+
+include '../nav.php'; 
+
+if($loggedOut) 	echo "<br />You were succssefully logged off!";
+else echo "Error</br>";
 
 ?>
+
 </div>
 </body>
 </html>

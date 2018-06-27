@@ -24,7 +24,7 @@ function calculatePoints($questions, $answers){
 		if(array_key_exists($id,$answers) && strtolower($question["Correct"])==strtolower($answers[$id]))
 			$points++;
 	}
-	if($points/$maxPoints>=50)
+	if($points/$maxPoints>=0.50)
 		echo "<p style='color:lightgreen'>You selected $points/$maxPoints good answers!</p> </br></br>";
 	else
 		echo "<p style='color:red'>You selected $points/$maxPoints good answers!</p> </br></br>";
@@ -33,7 +33,7 @@ function calculatePoints($questions, $answers){
 						   "Login" => $_SESSION["Logged"],
 						   "Points" => $points
 						  );
-		$apiResult = apiRequest("stats/add", "PUT",$postData);
+		$apiResult = apiRequest("stats", "PUT",$postData);
 		$response = $apiResult["Body"];
 		$statusCode = $apiResult["Status"];
 		$questions = json_decode($response, true);
@@ -42,7 +42,6 @@ function calculatePoints($questions, $answers){
 			echo "Error. Couldn't insert stats to database </br>";
 		}
 	}
-	
 }
 
 function checkAnswer($question, $answers,&$color){

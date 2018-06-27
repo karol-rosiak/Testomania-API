@@ -47,7 +47,7 @@ if(isset($_POST["Login"])){
 								"Email" => $email
 								);
 								
-			$apiResult = apiRequest("users/$id","PUT",$postArray);
+			$apiResult = apiRequest("users/$id/update","PUT",$postArray);
 			$response = $apiResult["Body"];
 			$response = json_decode($response);
 			$statusCode = $apiResult["Status"];

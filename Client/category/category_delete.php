@@ -8,11 +8,6 @@
 </head>
 
 <body>
-
-<?php
-//session_start();
-?>
-
 <div id="container">
 <?php
 include '../header.php';
@@ -29,7 +24,7 @@ if(!isset($_SESSION["Logged"]) || $_SESSION["Rank"] != "Administrator"){
 	die();
 }
 
-$apiResult = apiRequest("categories/$id/delete", "DELETE");
+$apiResult = apiRequest("categories/$id", "DELETE");
 $response = $apiResult["Body"];
 $statusCode = $apiResult["Status"];
 if ($statusCode != 204) {
@@ -40,9 +35,4 @@ if ($statusCode != 204) {
     echo "<a href='category_all.php'>Go back </a>";
 }
 ?>
-Question deleted.</br>
-<a href="category_all.php">Go back </a></br>
-
-
-
 </html>

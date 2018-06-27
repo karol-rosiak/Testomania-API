@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css" href="../style.css">
 <script>
-    var apiAddress = "http://127.0.0.1:5000/questions/one";
+    var apiAddress = "http://127.0.0.1:5000/questions/random/1";
 
     var radios = document.getElementsByName('answers');
     var answer = document.getElementsByClassName("answer");

@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
 //update the category with given data
 if (isset($_POST['Category'])) {
     $postArray = array("Category" => $_POST['Category']);
-    $apiResult = apiRequest("categories/$id/update", "PUT", $postArray);
+    $apiResult = apiRequest("categories/$id", "PUT", $postArray);
     $response = $apiResult["Body"];
     $statusCode = $apiResult["Status"];
     if ($statusCode != 200) {

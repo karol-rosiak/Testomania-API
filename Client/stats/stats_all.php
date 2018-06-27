@@ -22,7 +22,7 @@ if(!isset($_POST["SortBy"])){
 else{
 	$sortBy = $_POST["SortBy"];
 	$sortType = $_POST["SortType"];
-	$apiResult = apiRequest("stats/ranking/$sortBy/$sortType", "GET");
+	$apiResult = apiRequest("stats/$sortBy/$sortType", "GET");
 }
 
 $response = $apiResult["Body"];
