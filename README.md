@@ -1,7 +1,7 @@
 # Testomania API
 A little API project for a quiz site.
 # Overview
-The API was done using python flask. The API gets data from mysql database. I used mysql.connector to fetch data from it. Client side of this project was done in PHP.
+The API was done using python flask. The API gets data from MySQL database. I used mysql.connector to fetch data from it. Client side of this project was done mostly in PHP. One page was done in JavaScript and AJAX.
 # How to run
 - To run the server you need a python interpreter and compile it. I developed it on PyCharm.
 - To run the client you need a php server. I used xampp which provieds apache server
