@@ -29,7 +29,7 @@ if(!isset($_SESSION["Logged"]) || $_SESSION["Rank"] != "Administrator"){
 	die();
 }
 
-$apiResult = apiRequest("users/$id/delete", "DELETE");
+$apiResult = apiRequest("users/$id", "DELETE");
 $response = $apiResult["Body"];
 $statusCode = $apiResult["Status"];
 if ($statusCode != 204) {

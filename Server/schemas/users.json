@@ -22,5 +22,13 @@
 		"Email": {}
     },
     "required": ["Login","Password","Email"]
-	}
+	},
+	"login": {
+    "type": "object",
+    "properties": {
+		"Login": {},
+		"Password": {}
+    },
+    "required": ["Login","Password"]
+	}	
   }

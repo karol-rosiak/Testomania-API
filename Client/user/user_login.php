@@ -29,16 +29,11 @@ if (!isset($_SESSION['Logged'])) {
             if ($response != NULL) echo "Error: " . $response->error . "</br>";
             else echo "Error: couldn't connect to the server </br>";
         } else {
-            $passwordConfirm = $response[0]->Password;
-            if (password_verify($password, $passwordConfirm)) {
-                echo "Logged in successfully!";
-                $_SESSION["ID"] = $response[0]->Id;
-                $_SESSION["Logged"] = $login;
-                $_SESSION["Rank"] = $response[0]->Rank;
-                die();
-            } else {
-                echo "Wrong username or password! </br>";
-            }
+            echo "Logged in successfully!";
+            $_SESSION["ID"] = $response[0]->Id;
+            $_SESSION["Logged"] = $login;
+            $_SESSION["Rank"] = $response[0]->Rank;
+            die();
         }
     } else {
         $login = "";

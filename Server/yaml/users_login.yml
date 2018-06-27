@@ -5,21 +5,34 @@
     consumes:
     - application/json
     parameters:
-        - in: path
-          name: user_login
-          type: string
+        - in: body
+          name: user
+          description: The user to log in
           required: true
-          description: Name of user to login
+          schema:
+            type: object
+            required:
+              - Login
+              - Password
+            properties:
+                Login:
+                  type: string
+                Password:
+                  type: string                  
     responses:
       200:
         description: Returns login data
         schema:
           properties:
             Id:
-              type: string
-            Password:
-              type: string
+              type: integer
             Rank:
+              type: string
+      401:
+        description: Invalid password
+        schema:
+          properties:
+            error:
               type: string
       404:
         description: Invalid username

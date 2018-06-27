@@ -3,6 +3,7 @@ from flask import Flask, jsonify, abort, request, make_response, Response
 from flask_cors import CORS
 from flask_jsonschema import JsonSchema, ValidationError
 from flasgger import Swagger,swag_from
+import bcrypt
 import database as db
 
 app = Flask(__name__, static_url_path="")
@@ -13,8 +14,6 @@ app.config['SWAGGER'] = {
     'description': 'API for a quiz site'
 }
 swagger = Swagger(app)
-
-
 
 #json schema validation
 app.config['JSONSCHEMA_DIR'] = os.path.join(app.root_path, 'schemas')
@@ -39,6 +38,7 @@ def not_found(error):
 #=============questions==============
 
 
+#get list of all questions
 @app.route('/questions', methods=['GET'])
 @swag_from('yaml/questions.yml')
 def get_questions():
@@ -50,26 +50,8 @@ def get_questions():
         return make_response(jsonify(questions_list), 200)
 
 
-@app.route('/questions/random/<int:number>', methods=['GET'])
-@swag_from('yaml/questions_random.yml')
-def get_questions_random(number):
-    questions_list = db.get_questions_random(number)
-    if (len(questions_list) == 0):
-        return make_response(jsonify({'error': 'There are no questions in the database!'}), 404)
-    else:
-        return make_response(jsonify(questions_list), 200)
-
-@app.route('/questions/one', methods=['GET'])
-@swag_from('yaml/questions_one.yml')
-def get_one_question():
-    question = db.get_one_question()
-    if (len(question) == 0):
-        return make_response(jsonify({'error': 'There are no questions in the database!'}), 404)
-    else:
-        return make_response(jsonify(question), 200)
-
-
-@app.route('/questions/one/<int:question_id>', methods=['GET'])
+#get one specific question
+@app.route('/questions/<int:question_id>', methods=['GET'])
 @swag_from('yaml/questions_one_by_id.yml')
 def get_one_question_by_id(question_id):
     question = db.get_one_question_by_id(question_id)
@@ -79,7 +61,8 @@ def get_one_question_by_id(question_id):
         return make_response(jsonify(question), 200)
 
 
-@app.route('/questions/add', methods=['POST'])
+#insert a question to database
+@app.route('/questions', methods=['POST'])
 @jsonschema.validate('questions', 'insert')
 @swag_from('yaml/questions_insert.yml')
 def insert_question():
@@ -100,18 +83,9 @@ def insert_question():
         return make_response(jsonify({'error': "couldn't insert question"}), 400)
 
 
-@app.route('/questions/one/<int:question_id>/delete', methods=['DELETE'])
-@swag_from('yaml/questions_delete.yml')
-def delete_question(question_id):
-    rows_affected = db.delete_question(question_id)
-    if rows_affected:
-        return make_response('', 204)
-    else:
-        return make_response(jsonify({'error': "couldn't delete question"}), 404)
-
-
+#update a question
 @jsonschema.validate('questions', 'update')
-@app.route('/questions/one/<int:question_id>/update', methods=['PUT'])
+@app.route('/questions/<int:question_id>', methods=['PUT'])
 @swag_from('yaml/questions_update.yml')
 def update_question(question_id):
     if not request.json or 'Question' not in request.json:
@@ -126,9 +100,31 @@ def update_question(question_id):
         return make_response(jsonify({'error': "Couldn't update question!"}), 404)
 
 
+#delete a question
+@app.route('/questions/<int:question_id>', methods=['DELETE'])
+@swag_from('yaml/questions_delete.yml')
+def delete_question(question_id):
+    rows_affected = db.delete_question(question_id)
+    if rows_affected:
+        return make_response('', 204)
+    else:
+        return make_response(jsonify({'error': "couldn't delete question"}), 404)
+
+#get a random question
+@app.route('/questions/random/<int:number>', methods=['GET'])
+@swag_from('yaml/questions_random.yml')
+def get_questions_random(number):
+    questions_list = db.get_questions_random(number)
+    if (len(questions_list) == 0):
+        return make_response(jsonify({'error': 'There are no questions in the database!'}), 404)
+    else:
+        return make_response(jsonify(questions_list), 200)
+
+
 #=================categories=====================
 
 
+#get list of all categories
 @app.route('/categories', methods=['GET'])
 @swag_from('yaml/categories.yml')
 def get_categories():
@@ -138,7 +134,7 @@ def get_categories():
     else:
         return make_response(jsonify(categories_list),200)
 
-
+#get one specific category
 @app.route('/categories/<int:category_id>', methods=['GET'])
 @swag_from('yaml/categories_by_id.yml')
 def get_one_category_by_id(category_id):
@@ -149,7 +145,8 @@ def get_one_category_by_id(category_id):
         return make_response(jsonify(category),200)
 
 
-@app.route('/categories/add', methods=['POST'])
+#inset a category
+@app.route('/categories', methods=['POST'])
 @jsonschema.validate('categories', 'insert')
 @swag_from('yaml/categories_insert.yml')
 def insert_categories():
@@ -163,7 +160,8 @@ def insert_categories():
         return make_response(jsonify({'error': "couldn't insert category"}),400)
 
 
-@app.route('/categories/<int:category_id>/delete', methods=['DELETE'])
+#delete a category
+@app.route('/categories/<int:category_id>', methods=['DELETE'])
 @swag_from('yaml/categories_delete.yml')
 def delete_category(category_id):
     rows_affected = db.delete_category(category_id)
@@ -173,8 +171,8 @@ def delete_category(category_id):
         make_response(jsonify({'error': "couldn't delete category"}), 404)
 
 
-
-@app.route('/categories/<int:category_id>/update', methods=['PUT'])
+#update a category
+@app.route('/categories/<int:category_id>', methods=['PUT'])
 @jsonschema.validate('categories', 'update')
 @swag_from('yaml/categories_update.yml')
 def update_category(category_id):
@@ -189,6 +187,7 @@ def update_category(category_id):
 #===================stats======================
 
 
+#get all statistics from database
 @app.route('/stats', methods=['GET'])
 @swag_from('yaml/stats.yml')
 def get_stats():
@@ -199,7 +198,8 @@ def get_stats():
         return make_response(jsonify(statsList),200)
 
 
-@app.route('/stats/ranking/<string:sort_by>/<string:sort_type>', methods=['GET'])
+#get all statistics sorted
+@app.route('/stats/<string:sort_by>/<string:sort_type>', methods=['GET'])
 @swag_from('yaml/stats_ranking.yml')
 def get_stats_sorted(sort_by,sort_type):
     statsList = db.get_stats_sorted(sort_by,sort_type)
@@ -210,12 +210,13 @@ def get_stats_sorted(sort_by,sort_type):
         return make_response(jsonify(statsList),200)
 
 
+#get statistics of a given user
 @app.route('/stats/id/<int:user_id>', methods=['GET'])
 @swag_from('yaml/stats_by_id.yml')
 def get_stats_by_id(user_id):
     stats = db.get_stats_by_id(user_id)
     if(len(stats) == 0):
-        return make_response(jsonify({'error': 'Invalid user id'}), 404)
+        return make_response(jsonify({'error': 'This user has completed no tests or the id is invalid'}), 404)
     else:
         return make_response(jsonify(stats),200)
 
@@ -225,12 +226,13 @@ def get_stats_by_id(user_id):
 def get_stats_by_name(user_login):
     stats = db.get_stats_by_name(user_login)
     if(len(stats) == 0):
-        return make_response(jsonify({'error': 'Invalid user login'}), 404)
+        return make_response(jsonify({'error': 'This user has completed no tests or the username is invalid'}), 404)
     else:
         return make_response(jsonify(stats),200)
 
 
-@app.route('/stats/add', methods=['PUT'])
+#update stats of user
+@app.route('/stats', methods=['PUT'])
 @jsonschema.validate('stats', 'add')
 @swag_from('yaml/stats_add.yml')
 def add_points():
@@ -239,7 +241,7 @@ def add_points():
     user_id = db.get_user_id(request.json["Login"])
     if(user_id==0):
         return make_response(jsonify({'error': "This user doesn't exist!"}), 400)
-
+    print(user_id)
     rows_affected = db.add_points(request.json, user_id)
     if rows_affected:
         return make_response(jsonify({'result': "ok"}), 200)
@@ -247,6 +249,7 @@ def add_points():
         return make_response(jsonify({'error': "couldn't add points"}), 404)
 
 
+#clear stats of user (doesn't delete the users row, only sets all values to 0)
 @app.route('/stats/<int:user_id>/clear', methods=['PUT'])
 @swag_from('yaml/stats_clear.yml')
 def clear_points(user_id):
@@ -259,6 +262,7 @@ def clear_points(user_id):
 #====================users==========================
 
 
+#get all users
 @app.route('/users', methods=['GET'])
 @swag_from('yaml/users.yml')
 def get_users():
@@ -269,6 +273,7 @@ def get_users():
         return make_response(jsonify(users), 200)
 
 
+#get user by id
 @app.route('/users/id/<int:user_id>', methods=['GET'])
 @swag_from('yaml/users_by_id.yml')
 def get_user_by_id(user_id):
@@ -279,6 +284,7 @@ def get_user_by_id(user_id):
         return make_response(jsonify(user), 200)
 
 
+#get user by name
 @app.route('/users/name/<string:user_login>', methods=['GET'])
 @swag_from('yaml/users_by_name.yml')
 def get_user_by_name(user_login):
@@ -290,7 +296,8 @@ def get_user_by_name(user_login):
         return make_response(jsonify(user), 200)
 
 
-@app.route('/users/add', methods=['POST'])
+#insert user to database
+@app.route('/users', methods=['POST'])
 @jsonschema.validate('users', 'register')
 @swag_from('yaml/users_insert.yml')
 def insert_user():
@@ -311,7 +318,8 @@ def insert_user():
         return  make_response(jsonify({'error': "couldn't insert user"}),400)
 
 
-@app.route('/users/<int:user_id>/delete', methods=['DELETE'])
+#delete user
+@app.route('/users/<int:user_id>', methods=['DELETE'])
 @swag_from('yaml/users_delete.yml')
 def delete_user(user_id):
     rows_affected = db.delete_user(user_id)
@@ -321,8 +329,8 @@ def delete_user(user_id):
         make_response(jsonify({'error': "couldn't delete user"}), 404)
 
 
-
-@app.route('/users/<int:user_id>/update', methods=['PUT'])
+#update user
+@app.route('/users/<int:user_id>', methods=['PUT'])
 @jsonschema.validate('users', 'update')
 @swag_from('yaml/users_update.yml')
 def update_user(user_id):
@@ -335,7 +343,7 @@ def update_user(user_id):
         return  make_response(jsonify({'error': "couldn't update user"}),400)
 
 
-
+#update password
 @app.route('/users/<int:user_id>/password', methods=['PUT'])
 @jsonschema.validate('users', 'password')
 @swag_from('yaml/users_update_password.yml')
@@ -349,14 +357,26 @@ def update_user_password(user_id):
         return  make_response(jsonify({'error': "couldn't update password"}),400)
 
 
-@app.route('/users/<string:user_login>/login', methods=['GET'])
+#login user
+@app.route('/users/login', methods=['POST'])
+@jsonschema.validate('users', 'login')
 @swag_from('yaml/users_login.yml')
-def login_user(user_login):
-    return_data = db.login_user(user_login)
+def login_user():
+    if not request.json or 'Login' not in request.json:
+        print("LOL")
+        abort(400)
+    return_data = db.login_user(request.json)
+    print(bcrypt.hashpw(b"admin1", bcrypt.gensalt()))
+    password = request.json['Password'].encode('utf-8')
+    hash = return_data[0]['Password'].encode('utf-8')
     if(len(return_data) == 0):
-        return make_response(jsonify({'error': 'Invalid user name or password'}), 404)
+        return make_response(jsonify({'error': 'invalid user name'}), 404)
     else:
-         return make_response(jsonify(return_data), 200)
+        if(bcrypt.checkpw(password,hash)):
+            return_data[0].pop('Password')  # we don't need to return password to the user
+            return make_response(jsonify(return_data), 200)
+        else:
+            return  make_response(jsonify({'error': "wrong password"}),401)
 
 
 if __name__ == '__main__':

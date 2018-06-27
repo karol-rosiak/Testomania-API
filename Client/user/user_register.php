@@ -42,14 +42,13 @@ if(!isset($_SESSION['logged']))
 			$errors[] = "The passwords do not match!"; 
 
 		if(count($errors) == 0){
-			$password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 			$postArray = array(
 								"Login" => $_POST["login"],
 								"Password" => $password,
 								"Email" => $_POST["email"]
 								);
 								
-			$apiResult = apiRequest("users/add","POST",$postArray);
+			$apiResult = apiRequest("users","POST",$postArray);
 			$response = $apiResult["Body"];
 			$response = json_decode($response);
 		
@@ -57,6 +56,8 @@ if(!isset($_SESSION['logged']))
 			if($statusCode != 201){
 				if($response != NULL)
 					echo "Error: " . $response->error . "</br>";
+			} else{
+				echo "Error while adding a user </br>";
 			}
 			else{
 				echo "User registered successfully!";

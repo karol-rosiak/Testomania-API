@@ -1,5 +1,5 @@
 import mysql.connector
-
+import bcrypt
 
 def execute_query(query, arguments=None, return_rows = True):
     cnx = mysql.connector.connect(user='root', database='sitedb')  # connect to database
@@ -175,6 +175,7 @@ def get_stats_by_name(user_name):
 
 
 def add_points(json, user_id):
+    #check if the user has any stats registered
     query = ("SELECT COUNT(*) AS Count FROM stats WHERE UserId=%s")
 
     exists = execute_query(query,(user_id,))
@@ -183,7 +184,7 @@ def add_points(json, user_id):
                  " WHERE UserId = %s")
         affected_rows = execute_query(query, (json["Points"], user_id), False)
     else:
-        query = ("INSERT INTO stats(UserId, QuizzesCompleted, PointsEarned) VALUES(1, %s, %s)")
+        query = ("INSERT INTO stats(UserId, QuizzesCompleted, PointsEarned) VALUES(%s, 1, %s)")
         affected_rows = execute_query(query, (user_id,json["Points"]), False)
     return affected_rows
 
@@ -221,8 +222,10 @@ def update_user(user_id, json):
 def insert_user(json):
     query = ("INSERT INTO users(Login,Password,Email) VALUES (%s,%s,%s)")
 
+    hash =  bcrypt.hashpw(json["Password"].encode('utf-8'), bcrypt.gensalt())
+
     affected_rows = execute_query(query,
-                  (json["Login"],json["Password"],json["Email"]), False)
+                  (json["Login"], hash, json["Email"]), False)
     print("Insert user affected rows:", affected_rows)
     return affected_rows
 
@@ -259,9 +262,9 @@ def check_login(json):
     return login[0]["Count"]
 
 
-def login_user(user_login):
+def login_user(json):
     query = "SELECT Id,Password,Rank FROM users WHERE login = %s"
-    password_confirm = execute_query(query, (user_login, ))
+    password_confirm = execute_query(query, (json['Login'], ))
 
     return password_confirm
 

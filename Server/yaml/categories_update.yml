@@ -11,7 +11,7 @@
           required: true
           description: ID of category to be updated
         - in: body
-          name: question
+          name: category
           description: New name of the category
           required: true
           schema:
@@ -23,7 +23,7 @@
                   type: string
     responses:
       200:
-        description:  Confirmation that the question was category
+        description:  Confirmation that the category was updated
         schema:
           properties:
             Result:
