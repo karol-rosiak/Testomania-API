@@ -5,7 +5,7 @@ The API was done using python flask. The API gets data from mysql database. I us
 # How to run
 - To run the server you need a python interpreter and compile it. I developed it on PyCharm.
 - To run the client you need a php server. I used xampp which provieds apache server
-- Also you need mysql server. I used xampp for that too
+- Also you need mysql server to import the database. I used xampp for that too
 # Documenation
 The documentation is located in the Doc directory. It's a static documentation generated from swagger JSON file using [Spectacle](https://github.com/sourcey/spectacle). You can also run the Swagger UI version by typing http://localhost:5000/apidocs in your browser while the server is running. This documentation was generated using [Flasgger](https://github.com/rochacbruno/flasgger)  
 # TODO

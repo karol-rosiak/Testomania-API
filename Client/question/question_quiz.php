@@ -45,12 +45,16 @@ function calculatePoints($questions, $answers){
 	
 }
 
-function checkAnswer($question, $answers){
+function checkAnswer($question, $answers,&$color){
 	$id = $question["ID"];
 	if(array_key_exists($id,$answers) && strtolower($question["Correct"])==strtolower($answers[$id])){
 		echo "<p style='color:lightgreen'>You selected the correct answer! (Answer " . strtoupper($question["Correct"]) . ")</p> </br>";
+		$color[$answers[$id]] = "goodanswer";
 	}else{
 		echo "<p style='color:red'>You selected the wrong answer! (Correct answer " . strtoupper($question["Correct"]) . ")</p> </br>";
+		$color[$question["Correct"]] = "goodanswer";
+		if(array_key_exists($id,$answers))
+		$color[$answers[$id]] = "badanswer";
 	}
 }
 
@@ -79,16 +83,19 @@ $counter = 1;
 <?php 
 if($checkingAnswers) calculatePoints($questions,$_POST);
 foreach($questions as $question){
-	if($checkingAnswers) checkAnswer($question,$_POST);
+	$color = array("A"=>"answer","B"=>"answer","C" => "answer", "D" => "answer");
+	if($checkingAnswers){
+		checkAnswer($question,$_POST,$color);
+	}
 		
 	echo $counter . ". " . $question["Question"] . "</br>";
 
 	for($answer = "A";$answer <="D";$answer++){
 		if(!$checkingAnswers)
 			echo"<input type='radio' value='$answer' name='" . $question['ID'] . "'>";
-		echo"<p class='answer'>$answer. $question[$answer]</p> </br>";
+		echo"<p class='$color[$answer]'>$answer. $question[$answer]</p> </br>";
 	}
-	
+	echo "</br>";
 	$counter++;
 }
 
